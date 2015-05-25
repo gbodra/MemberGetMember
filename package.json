@@ -1,0 +1,13 @@
+{
+  "name":"MemberGetMember",
+  "version":"1.0.0",
+  "description":"The new API to simplify your life when asking for refferences",
+  "main":"MemberGetMember.js",
+  "dependencies":{
+    "express":"3.x.x",
+    "usergrid":"x.x.x",
+    "body-parser":"x.x.x",
+    "check-types":"x.x.x",
+    "async":"x.x.x"
+  }
+}
