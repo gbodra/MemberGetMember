@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Page Title</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script type="text/javascript" src="apigee-javascript-sdk-2.0.9/apigee.min.js"></script>
+</head>
+<body>
+
+  <div data-role="page" id="page-login">
+
+    <div data-role="header">
+      <a href="#" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-back" data-rel="back">Back</a>
+      <h1>My App - Invite Friend</h1>
+    </div><!-- /header -->
+
+    <div data-role="navbar">
+      <ul>
+        <li><a href="#" class="ui-btn-active">Invite Friend</a></li>
+        <li><a href="#">Redeem Discount</a></li>
+      </ul>
+    </div><!-- /navbar -->
+
+    <div role="main" class="ui-content">
+      <label for="text-basic">Username:</label>
+      <input type="text" name="username" id="username" value="johndoe">
+
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" value="Bodra123*" autocomplete="off">
+
+      <a href="#page-loggedin" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-check" id="btnLogin">Login</a>
+    </div><!-- /content -->
+
+    <div data-role="footer">
+      <h4>Page Footer</h4>
+    </div><!-- /footer -->
+  </div><!-- /page -->
+
+  <div data-role="page" id="page-loggedin">
+
+    <div data-role="header">
+      <a href="#" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-back" data-rel="back">Back</a>
+      <h1>My App - Invite Friend</h1>
+    </div><!-- /header -->
+
+    <div data-role="navbar">
+      <ul>
+        <li><a href="#" class="ui-btn-active">Invite Friend</a></li>
+        <li><a href="#">Redeem Discount</a></li>
+      </ul>
+    </div><!-- /navbar -->
+
+    <div role="main" class="ui-content">
+      Hello
+    </div><!-- /content -->
+
+    <div data-role="footer">
+      <h4>Page Footer</h4>
+    </div><!-- /footer -->
+  </div><!-- /page -->
+
+</body>
+</html>
+<script>
+$( "#btnLogin" ).click(function (){
+  $.ajax({
+    method: "POST",
+    url: "http://127.0.0.1:8888/logon",
+    data: JSON.stringify({ Username:"johndoe", Password:"Bodra123*" }),
+    contentType: "application/json",
+    dataType: "json"
+  })
+  .done(function (data) {
+    alert(JSON.stringify(data));
+  });
+});
+</script>

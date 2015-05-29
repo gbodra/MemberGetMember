@@ -18,7 +18,7 @@ app.post("/logon", function(req, res){
     if (err){
       res.send("Erro ao autenticar usuário");
     } else {
-      res.send(client.token);
+      res.send({clientToken:client.token});
     }
   });
 });
@@ -166,12 +166,6 @@ app.post("/discount", function (req, res){
             if (error) {
               res.send("Erro2");
             } else {
-              /*var output = {
-
-              };
-              for (connection in connections.entities){
-                console.log(connections.entities[connection].name);
-              }*/
               res.send(connections.entities);
             }
           });
