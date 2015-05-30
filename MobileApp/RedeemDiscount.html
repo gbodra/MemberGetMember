@@ -17,16 +17,9 @@
   <div data-role="page" id="page-login">
 
     <div data-role="header">
-      <a href="#" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-back" data-rel="back">Back</a>
-      <h1>My App - Invite Friend</h1>
+      <a href="Index.html" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-home" rel="external">Home</a>
+      <h1>Member Get Member</h1>
     </div><!-- /header -->
-
-    <div data-role="navbar">
-      <ul>
-        <li><a href="#" class="ui-btn-active">Invite Friend</a></li>
-        <li><a href="#">Redeem Discount</a></li>
-      </ul>
-    </div><!-- /navbar -->
 
     <div role="main" class="ui-content">
       <label for="text-basic">Username:</label>
@@ -39,46 +32,79 @@
     </div><!-- /content -->
 
     <div data-role="footer">
-      <h4>Page Footer</h4>
+      <h4>Gustavo Bodra 2015 Copyrights</h4>
     </div><!-- /footer -->
   </div><!-- /page -->
 
   <div data-role="page" id="page-loggedin">
 
     <div data-role="header">
-      <a href="#" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-back" data-rel="back">Back</a>
-      <h1>My App - Invite Friend</h1>
+      <a href="Index.html" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-home" rel="external">Home</a>
+      <h1>Member Get Member</h1>
     </div><!-- /header -->
 
-    <div data-role="navbar">
-      <ul>
-        <li><a href="#" class="ui-btn-active">Invite Friend</a></li>
-        <li><a href="#">Redeem Discount</a></li>
-      </ul>
-    </div><!-- /navbar -->
-
     <div role="main" class="ui-content">
-      Hello
+      <div class="ui-body ui-body-a ui-corner-all">
+        <h3>11-inch MacBook Air</h3>
+        <div class="ui-block-a"><img src="images/macbook-air-11-step1-hero-2015.png"/></div>
+      </div>
+
+      <div class="ui-body ui-body-a ui-corner-all">
+        <h3>Description</h3>
+        <p>11-inch : 128GB<br/>Specifications<br/>1.6GHz dual-core Intel Core i5 processor<br/>Turbo Boost up to 2.7GHz<br/>Intel HD Graphics 6000<br/>4GB memory<br/>128GB PCIe-based flash storage1</p>
+      </div>
+
+      <div class="ui-body ui-body-a ui-corner-all">
+        <h3>Price</h3>
+        <p>
+          Price: $<span id="price">1000.00</span><br/>
+          Discount: <span id="discount">loading...</span><br/>
+          Discounted Price: <span id="discounted-price">loading...</span><br/>
+          <a href="#" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-shop" id="btnBuy">Buy</a>
+        </p>
+      </div>
+
+      <div class="ui-body ui-body-a ui-corner-all">
+        <h3>Tech Specs</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse accumsan blandit fermentum. Pellentesque cursus mauris purus, auctor commodo mi ullamcorper nec. Donec semper mattis eros, nec condimentum ante sollicitudin quis. Etiam orci sem, porttitor ut tellus nec, blandit posuere urna. Proin a arcu non lacus pretium faucibus. Aliquam sed est porttitor, ullamcorper urna nec, vehicula lorem. Cras porttitor est lorem, non venenatis diam convallis congue.</p>
+      </div>
     </div><!-- /content -->
 
     <div data-role="footer">
-      <h4>Page Footer</h4>
+      <h4>Gustavo Bodra 2015 Copyrights</h4>
     </div><!-- /footer -->
   </div><!-- /page -->
 
 </body>
 </html>
 <script>
-$( "#btnLogin" ).click(function (){
+$(document).on('click', '#btnLogin', function (e){
+  var username = $("#username").val();
+  var password = $("#password").val();
+
   $.ajax({
     method: "POST",
-    url: "http://127.0.0.1:8888/logon",
-    data: JSON.stringify({ Username:"johndoe", Password:"Bodra123*" }),
+    url: "/logon",
+    data: JSON.stringify({ Username:username, Password:password }),
     contentType: "application/json",
     dataType: "json"
   })
   .done(function (data) {
-    alert(JSON.stringify(data));
+    $.ajax({
+      method: "POST",
+      url: "/discount",
+      data: JSON.stringify({ type:"members",uuid:"7640aa5a-04d6-11e5-9e27-6bbd13decb6e" }),
+      contentType: "application/json",
+      dataType: "json"
+    })
+    .done(function (discountData) {
+      var fullPrice = parseFloat($("#price").text());
+      var discount = parseFloat(discountData.discount);
+      var discountedPrice = fullPrice - (fullPrice * discount);
+
+      $("#discount").html(discount*100 + "%");
+      $("#discounted-price").html("$" + discountedPrice);
+    });
   });
 });
 </script>

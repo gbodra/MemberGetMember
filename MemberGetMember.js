@@ -166,7 +166,17 @@ app.post("/discount", function (req, res){
             if (error) {
               res.send("Erro2");
             } else {
-              res.send(connections.entities);
+              //TODO: verificar a validade das campanhas
+              //TODO: verificar o tipo de desconto (membro ou amigo)
+              var bestDiscount = { discount:0 };
+
+              connections.entities.forEach(function (campaign){
+                if (campaign.MemberDiscount > bestDiscount.discount){
+                  bestDiscount.discount = campaign.MemberDiscount;
+                }
+              });
+
+              res.send(bestDiscount);
             }
           });
         }

@@ -17,16 +17,9 @@
   <div data-role="page" id="page-login">
 
     <div data-role="header">
-      <a href="#" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-back" data-rel="back">Back</a>
-      <h1>My App - Invite Friend</h1>
+      <a href="Index.html" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-home" rel="external">Home</a>
+      <h1>Member Get Member</h1>
     </div><!-- /header -->
-
-    <div data-role="navbar">
-      <ul>
-        <li><a href="#" class="ui-btn-active">Invite Friend</a></li>
-        <li><a href="#">Redeem Discount</a></li>
-      </ul>
-    </div><!-- /navbar -->
 
     <div role="main" class="ui-content">
       <label for="text-basic">Username:</label>
@@ -39,46 +32,86 @@
     </div><!-- /content -->
 
     <div data-role="footer">
-      <h4>Page Footer</h4>
+      <h4>Gustavo Bodra 2015 Copyrights</h4>
     </div><!-- /footer -->
   </div><!-- /page -->
 
   <div data-role="page" id="page-loggedin">
 
     <div data-role="header">
-      <a href="#" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-back" data-rel="back">Back</a>
-      <h1>My App - Invite Friend</h1>
+      <a href="Index.html" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-home" rel="external">Home</a>
+      <h1>Member Get Member</h1>
     </div><!-- /header -->
 
-    <div data-role="navbar">
-      <ul>
-        <li><a href="#" class="ui-btn-active">Invite Friend</a></li>
-        <li><a href="#">Redeem Discount</a></li>
-      </ul>
-    </div><!-- /navbar -->
-
     <div role="main" class="ui-content">
-      Hello
+      <label for="text-basic">Name:</label>
+      <input type="text" name="name" id="name" value="Gustavo">
+
+      <label for="email">Email:</label>
+      <input type="text" name="email" id="email" value="gustavobodra@gmail.com">
+
+      <label for="friendName">Friend's Name:</label>
+      <input type="text" name="friendName" id="friendName">
+
+      <label for="friendEmail">Friend's Email:</label>
+      <input type="email" name="friendEmail" id="friendEmail">
+
+      <label for="friendPhone">Friend's Phone:</label>
+      <input type="text" name="friendPhone" id="friendPhone">
+
+      <label for="campaign">Campaign ID:</label>
+      <input type="text" name="campaign" id="campaign" disabled="disabled" value="62f398da-04c8-11e5-b47f-61832d10c6ad">
+
+      <a href="#page-loggedin" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-user" id="btnInvite">Invite</a>
     </div><!-- /content -->
 
     <div data-role="footer">
-      <h4>Page Footer</h4>
+      <h4>Gustavo Bodra 2015 Copyrights</h4>
     </div><!-- /footer -->
   </div><!-- /page -->
 
 </body>
 </html>
 <script>
-$( "#btnLogin" ).click(function (){
+$(document).on('click', '#btnInvite', function (e){
+  var name = $("#name").val();
+  var email = $("#email").val();
+
+  var friendName = $("#friendName").val();
+  var friendEmail = $("#friendEmail").val();
+  var friendPhone = $("#friendPhone").val();
+
+  var campaign = $("#campaign").val();
+
+  var input = {
+    Member:{
+      FullName:name,
+      Id:email
+    },
+    Friend:{
+      FullName:friendName,
+      Id:friendEmail,
+      PhoneMobile:friendPhone,
+      CampaignCode:campaign
+    }
+  };
+
   $.ajax({
     method: "POST",
-    url: "http://127.0.0.1:8888/logon",
-    data: JSON.stringify({ Username:"johndoe", Password:"Bodra123*" }),
+    url: "/invite",
+    data: JSON.stringify(input),
     contentType: "application/json",
     dataType: "json"
   })
   .done(function (data) {
-    alert(JSON.stringify(data));
+    alert('Amigo indicado com sucesso!');
+
+    $("#name").val("");
+    $("#email").val("");
+    $("#friendName").val("");
+    $("#friendEmail").val("");
+    $("#friendPhone").val("");
+    $("#campaign").val("");
   });
 });
 </script>
