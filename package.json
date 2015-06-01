@@ -8,6 +8,9 @@
     "usergrid":"x.x.x",
     "body-parser":"x.x.x",
     "check-types":"x.x.x",
-    "async":"x.x.x"
+    "async":"x.x.x",
+    "moment":"x.x.x",
+    "mandrill-api/mandrill":"x.x.x",
+    "winston":"x.x.x"
   }
 }
