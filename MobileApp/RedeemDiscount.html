@@ -90,10 +90,17 @@ $(document).on('click', '#btnLogin', function (e){
     dataType: "json"
   })
   .done(function (data) {
+    $.mobile.loading( "show", {
+      text: "loading...",
+      textVisible: true,
+      theme: "a",
+      html: ""
+    });
+    
     $.ajax({
       method: "POST",
       url: "/discount",
-      data: JSON.stringify({ type:"members",uuid:"7640aa5a-04d6-11e5-9e27-6bbd13decb6e" }),
+      data: JSON.stringify({ type:"members",uuid:"7640aa5a-04d6-11e5-9e27-6bbd13decb6e", token: data.token }),
       contentType: "application/json",
       dataType: "json"
     })
@@ -104,6 +111,8 @@ $(document).on('click', '#btnLogin', function (e){
 
       $("#discount").html(discount*100 + "%");
       $("#discounted-price").html("$" + discountedPrice);
+
+      $.mobile.loading( "hide" );
     });
   });
 });

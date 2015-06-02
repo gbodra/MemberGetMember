@@ -4,11 +4,13 @@ var bodyParser = require('body-parser');
 var check = require('check-types');
 var async = require('async');
 var moment = require('moment');
+var cors = require('cors');
 var mail = require('./membergetmember-utils-email');
 
 var app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.post("/logon", function(req, res){
   var client = new usergrid.client({

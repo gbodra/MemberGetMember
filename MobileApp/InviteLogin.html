@@ -74,6 +74,13 @@
 </html>
 <script>
 $(document).on('click', '#btnInvite', function (e){
+  $.mobile.loading( "show", {
+    text: "loading...",
+    textVisible: true,
+    theme: "a",
+    html: ""
+  });
+
   var name = $("#name").val();
   var email = $("#email").val();
 
@@ -83,35 +90,42 @@ $(document).on('click', '#btnInvite', function (e){
 
   var campaign = $("#campaign").val();
 
-  var input = {
-    Member:{
-      FullName:name,
-      Id:email
-    },
-    Friend:{
-      FullName:friendName,
-      Id:friendEmail,
-      PhoneMobile:friendPhone,
-      CampaignCode:campaign
-    }
-  };
-
   $.ajax({
     method: "POST",
-    url: "/invite",
-    data: JSON.stringify(input),
+    url: "/logon",
+    data: JSON.stringify({ Username:"johndoe", Password:"Bodra123*" }),
     contentType: "application/json",
     dataType: "json"
   })
-  .done(function (data) {
-    alert('Amigo indicado com sucesso!');
+  .done(function (dataLogin){
+    var input = {
+      Member:{
+        FullName:name,
+        Id:email
+      },
+      Friend:{
+        FullName:friendName,
+        Id:friendEmail,
+        PhoneMobile:friendPhone,
+        CampaignCode:campaign
+      },
+      token:dataLogin.token
+    };
 
-    $("#name").val("");
-    $("#email").val("");
-    $("#friendName").val("");
-    $("#friendEmail").val("");
-    $("#friendPhone").val("");
-    $("#campaign").val("");
+    $.ajax({
+      method: "POST",
+      url: "/invite",
+      data: JSON.stringify(input),
+      contentType: "application/json",
+      dataType: "json"
+    })
+    .done(function (data) {
+      $.mobile.loading( "hide" );
+
+      $("#friendName").val("");
+      $("#friendEmail").val("");
+      $("#friendPhone").val("");
+    });
   });
 });
 </script>

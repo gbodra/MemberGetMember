@@ -1,1 +1,1 @@
-sudo apigeetool deploynodeapp -o gustavobodra -e test -n MemberGetMember -m MemberGetMember.js -d . -b /MemberGetMember -u gustavobodra@gmail.com
+sudo apigeetool deploynodeapp -o gustavobodra -e test -n MemberGetMember -m membergetmember-core.js -d . -b /MemberGetMember -u gustavobodra@gmail.com
