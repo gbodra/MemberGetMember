@@ -9,8 +9,8 @@ var mail = require('./membergetmember-utils-email');
 
 var app = express();
 
-app.use(bodyParser.json());
-app.use(cors());
+app.use(bodyParser.json({ type: '*/*' }));
+app.use(cors( { origin: 'http://membergetmember.badulakka.com.br' } ));
 
 app.post("/logon", function(req, res){
   var client = new usergrid.client({
@@ -18,6 +18,7 @@ app.post("/logon", function(req, res){
     appName:'membergetmember',
     authType: usergrid.AUTH_APP_USER
   });
+  console.log(req.body);
 
   client.login(req.body.Username, req.body.Password, function (err, response){
     if (err){

@@ -1,0 +1,24 @@
+{
+  "name": "jquery-cors",
+  "version": "1.0.0",
+  "authors": [
+    "Kit Sunde <kitsunde@gmail.com>"
+  ],
+  "description": "Proxy CORS with jQuery.",
+  "main": "src/cors.js",
+  "keywords": [
+    "cors",
+    "jquery",
+    "ajax",
+    "corsproxy"
+  ],
+  "license": "MIT",
+  "homepage": "http://github.com/Celc/jquery-cors",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

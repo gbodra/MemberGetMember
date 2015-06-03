@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
   <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
   <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-  <script type="text/javascript" src="apigee-javascript-sdk-2.0.9/apigee.min.js"></script>
 </head>
 <body>
 
@@ -92,10 +91,13 @@ $(document).on('click', '#btnInvite', function (e){
 
   $.ajax({
     method: "POST",
-    url: "/logon",
+    url: "http://gustavobodra-test.apigee.net/MemberGetMember/logon",
     data: JSON.stringify({ Username:"johndoe", Password:"Bodra123*" }),
-    contentType: "application/json",
-    dataType: "json"
+    dataType: "json",
+    crossDomain: true,
+    beforeSend: function(xhr){
+      xhr.withCredentials = true;
+    }
   })
   .done(function (dataLogin){
     var input = {
@@ -114,10 +116,13 @@ $(document).on('click', '#btnInvite', function (e){
 
     $.ajax({
       method: "POST",
-      url: "/invite",
+      url: "http://gustavobodra-test.apigee.net/MemberGetMember/invite",
       data: JSON.stringify(input),
-      contentType: "application/json",
-      dataType: "json"
+      dataType: "json",
+      crossDomain: true,
+      beforeSend: function(xhr){
+        xhr.withCredentials = true;
+      }
     })
     .done(function (data) {
       $.mobile.loading( "hide" );

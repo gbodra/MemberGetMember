@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
   <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
   <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-  <script type="text/javascript" src="apigee-javascript-sdk-2.0.9/apigee.min.js"></script>
 </head>
 <body>
 
@@ -84,10 +83,13 @@ $(document).on('click', '#btnLogin', function (e){
 
   $.ajax({
     method: "POST",
-    url: "/logon",
+    url: "http://gustavobodra-test.apigee.net/MemberGetMember/logon",
     data: JSON.stringify({ Username:username, Password:password }),
-    contentType: "application/json",
-    dataType: "json"
+    dataType: "json",
+    crossDomain: true,
+    beforeSend: function(xhr){
+      xhr.withCredentials = true;
+    }
   })
   .done(function (data) {
     $.mobile.loading( "show", {
@@ -96,13 +98,16 @@ $(document).on('click', '#btnLogin', function (e){
       theme: "a",
       html: ""
     });
-    
+
     $.ajax({
       method: "POST",
-      url: "/discount",
+      url: "http://gustavobodra-test.apigee.net/MemberGetMember/discount",
       data: JSON.stringify({ type:"members",uuid:"7640aa5a-04d6-11e5-9e27-6bbd13decb6e", token: data.token }),
-      contentType: "application/json",
-      dataType: "json"
+      dataType: "json",
+      crossDomain: true,
+      beforeSend: function(xhr){
+        xhr.withCredentials = true;
+      }
     })
     .done(function (discountData) {
       var fullPrice = parseFloat($("#price").text());

@@ -1,0 +1,27 @@
+{
+  "name": "cors",
+  "version": "1.0.0",
+  "title": "jQuery CORS ajax plugin.",
+  "description": "Sends cross domain ajax requests through corsproxy.io",
+  "keywords": [
+    "ajax",
+    "cors"
+  ],
+  "author": {
+    "name": "Kit Sunde",
+    "email": "kitsunde@gmail.com",
+    "url": "http://github.com/Celc"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jquery/jquery-color/blob/2.1.2/MIT-LICENSE.txt"
+    }
+  ],
+  "bugs": "https://github.com/Celc/jquery-cors/issues",
+  "homepage": "https://github.com/Celc/jquery-cors",
+  "docs": "https://github.com/Celc/jquery-cors",
+  "dependencies": {
+    "jquery": ">=1.5"
+  }
+}

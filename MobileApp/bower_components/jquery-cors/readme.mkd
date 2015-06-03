@@ -1,0 +1,22 @@
+# jQuery CORS
+
+Enable your frontend to do cross domain requests just by adding:
+
+    $.enableCORS();
+
+Which means you can now do:
+
+    $.get("https://www.facebook.com/feeds/page.php?format=json&id=501718186559038", function(r){
+      console.log(r);
+    });
+
+All the requests are proxies via corsproxy.io.
+
+## Installation
+
+    bower install jquery-cors
+
+Include it after jQuery
+
+    <script src="src/cors.js"></script>
+    <script>$.enableCORS();</script>
