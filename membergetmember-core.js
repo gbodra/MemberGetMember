@@ -221,12 +221,15 @@ app.post("/discount", function (req, res){
 								
 								if (timestamp >= campaign.StartDate && timestamp <= campaign.EndDate){
 									if (campaign.MemberDiscount > bestDiscount.discount){
+										console.log(req.body.type);
 										switch(req.body.type){
 											case "members":
 												bestDiscount.discount = campaign.MemberDiscount;
+												console.log("member discount");
 												break;
 											case "friends":
 												bestDiscount.discount = campaign.FriendDiscount ;
+												console.log("friend discount");
 												break;
 										}
 									}
