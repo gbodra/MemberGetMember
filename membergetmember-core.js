@@ -49,17 +49,14 @@ app.post("/invite", function (req, res){
 			var inputMember = {
 				type:'members',
 				FullName:req.body.Member.FullName,
-				name:req.body.Member.Id,
-				getOnExist:true
+				name:req.body.Member.Id
 			};
 			
 			var inputFriend = {
 				type:'friends',
 				FullName:req.body.Friend.FullName,
 				name:req.body.Friend.Id,
-				PhoneMobile:req.body.Friend.PhoneMobile,
-				CampaignCode:req.body.Friend.CampaignCode,
-				getOnExist:true
+				PhoneMobile:req.body.Friend.PhoneMobile
 			};
 			
 			async.waterfall([
@@ -108,7 +105,7 @@ app.post("/invite", function (req, res){
 				function (callback){
 					var retrievalObj = {
 						type: 'campaign',
-						uuid:inputFriend.CampaignCode
+						uuid:req.body.Friend.CampaignCode
 					};
 					
 					client.getEntity(retrievalObj, function (err, campaign){ //RELACIONAMENTOS COM O OBJETO CAMPANHA
@@ -216,12 +213,18 @@ app.post("/discount", function (req, res){
 							//TODO: verificar o tipo de desconto (membro ou amigo)
 							var bestDiscount = { discount:0 };
 							var discountType = req.body.type;
-							console.log(req.body.type);
+							
+							console.log(connections.entities);
 							
 							connections.entities.forEach(function (campaign){
 								var timestamp = moment.utc().valueOf();
 								
+								console.log(timestamp);
+								console.log(campaign.StartDate);
+								console.log(campaign.EndDate);
+								
 								if (timestamp >= campaign.StartDate && timestamp <= campaign.EndDate){
+									console.log("válida");
 									if (discountType == "members"){
 										if (campaign.MemberDiscount > bestDiscount.discount){
 											bestDiscount.discount = campaign.MemberDiscount;
