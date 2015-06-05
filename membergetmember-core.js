@@ -215,22 +215,22 @@ app.post("/discount", function (req, res){
 							} else {
 							//TODO: verificar o tipo de desconto (membro ou amigo)
 							var bestDiscount = { discount:0 };
+							var discountType = req.body.type;
+							console.log(req.body.type);
 							
 							connections.entities.forEach(function (campaign){
 								var timestamp = moment.utc().valueOf();
 								
 								if (timestamp >= campaign.StartDate && timestamp <= campaign.EndDate){
-									if (campaign.MemberDiscount > bestDiscount.discount){
-										console.log(req.body.type);
-										switch(req.body.type){
-											case "members":
-												bestDiscount.discount = campaign.MemberDiscount;
-												console.log("member discount");
-												break;
-											case "friends":
-												bestDiscount.discount = campaign.FriendDiscount ;
-												console.log("friend discount");
-												break;
+									if (discountType == "members"){
+										if (campaign.MemberDiscount > bestDiscount.discount){
+											bestDiscount.discount = campaign.MemberDiscount;
+											console.log("member discount");
+										}
+									} else {
+										if (campaign.FriendDiscount > bestDiscount.discount){
+											bestDiscount.discount = campaign.FriendDiscount;
+											console.log("friend discount");
 										}
 									}
 								}
