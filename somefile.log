@@ -1,0 +1,3 @@
+{"level":"error","message":"Test","timestamp":"2015-06-06T01:54:25.226Z"}
+{"level":"error","message":"Error while authenticating user|[object Object]","timestamp":"2015-06-06T02:02:42.658Z"}
+{"level":"error","message":"Error while authenticating user|{\"Username\":\"johndoe@email.com\",\"Password\":\"Bodra123*\"}","timestamp":"2015-06-06T02:05:19.155Z"}

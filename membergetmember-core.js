@@ -5,12 +5,15 @@ var check = require('check-types');
 var async = require('async');
 var moment = require('moment');
 var cors = require('cors');
+var winston = require('winston');
 var mail = require('./membergetmember-utils-email');
 
+/* INITIAL SETUPS */
 var app = express();
-
 app.use(bodyParser.json({ type: '*/*' }));
 app.use(cors( { origin: 'http://membergetmember.badulakka.com.br' } ));
+winston.add(winston.transports.File, { filename: 'errors.log' });
+winston.remove(winston.transports.Console);
 
 app.post("/logon", function(req, res){
 	var client = new usergrid.client({
@@ -22,7 +25,8 @@ app.post("/logon", function(req, res){
 	
 	client.login(req.body.Username, req.body.Password, function (err, response){
 		if (err){
-			res.send("Erro ao autenticar usuário");
+			winston.error("Error while authenticating user|" + JSON.stringify(req.body));
+			res.status(500).send("Erro ao autenticar usuário");
 			} else {
 			res.send({token:client.token});
 		}
@@ -63,13 +67,13 @@ app.post("/invite", function (req, res){
 			function(callback) { //SALVA O OBJETO MEMBER NA BASE
 				client.createEntity(inputMember, function (err, member){
 					if (err){
-						console.log("Error while creating member");
+						winston.error("Error while creating member|" + JSON.stringify(inputMember));
 						} else {
 						member.set('clientId','1');//DUMMY, MUDAR PARA O USUÁRIO DA SESSÃO
 						
 						member.save(function (err){
 							if (err){
-								console.log("Error while saving member");
+								winston.error("Error while saving member|" + JSON.stringify(inputMember));
 								} else {
 								callback(null, member);
 							}
@@ -80,11 +84,11 @@ app.post("/invite", function (req, res){
 			function(member, callback) { //SALVA O OBJETO FRIEND NA BASE
 				client.createEntity(inputFriend, function (err, friend){
 					if (err){
-						console.log("Error while creating friend");
+						winston.error("Error while creating friend|" + JSON.stringify(inputFriend));
 						} else {
 						friend.save(function (err){
 							if (err){
-								console.log("Error while saving friend");
+								winston.error("Error while saving friend|" + JSON.stringify(inputFriend));
 								} else {
 								var memberFriend = {
 									memberData:member,
@@ -110,20 +114,20 @@ app.post("/invite", function (req, res){
 					
 					client.getEntity(retrievalObj, function (err, campaign){ //RELACIONAMENTOS COM O OBJETO CAMPANHA
 						if (err){
-							console.log("Error while loading campaign object");
+							winston.error("Error while loading campaign object|" + JSON.stringify(campaign));
 							} else {
 							async.parallel([
 							function (callback){
 								friend.connect('belongs', campaign, function (err, data) {
 									if (err){
-										console.log("Error while connecting friend to campaign");
+										winston.error("Error while connecting friend to campaign|" + JSON.stringify(friend) + "|" + JSON.stringify(campaign));
 									}
 								});
 							},
 							function (callback){
 								member.connect('belongs', campaign, function (err, data) {
 									if (err){
-										console.log("Error while connecting member to campaign");
+										winston.error("Error while connecting member to campaign|" + JSON.stringify(member) + "|" + JSON.stringify(campaign));
 									}
 								});
 							}
@@ -136,7 +140,7 @@ app.post("/invite", function (req, res){
 				function (callback){ // RELACIONAMENTO ENTRE MEMBER E FRIEND
 					member.connect('invites', friend, function (err, data){
 						if (err){
-							console.log("Error while connecting friend");
+							winston.error("Error while connecting friend|" + JSON.stringify(member) + "|" + JSON.stringify(campaign));
 						}
 					});
 					
@@ -177,9 +181,11 @@ app.post("/invite", function (req, res){
 				});
 			});
 			} else {
+			winston.info("Request does not match with the expected object");
 			res.status(400).send("Request does not match with the expected object");
 		}
 		} else {
+		winston.info("Please login to use the API|" + JSON.stringify(req.body));
 		res.status(401).send("Please login to use the API");
 	}
 });
@@ -204,13 +210,12 @@ app.post("/discount", function (req, res){
 			
 			client.getEntity(query, function(err, entity){
 				if (err){
-					res.send("Erro1");
+					winston.error("Error while getting the member/friend data|" + JSON.stringify(query));
 					} else {
 					entity.getConnections('belongs', function (error, connections) {
 						if (error) {
-							res.send("Erro2");
+							winston.error("Error while fetching connections|" + JSON.stringify(entity));
 							} else {
-							//TODO: verificar o tipo de desconto (membro ou amigo)
 							var bestDiscount = { discount:0 };
 							var discountType = req.body.type;
 							
@@ -224,16 +229,13 @@ app.post("/discount", function (req, res){
 								console.log(campaign.EndDate);
 								
 								if (timestamp >= campaign.StartDate && timestamp <= campaign.EndDate){
-									console.log("válida");
 									if (discountType == "members"){
 										if (campaign.MemberDiscount > bestDiscount.discount){
 											bestDiscount.discount = campaign.MemberDiscount;
-											console.log("member discount");
 										}
-									} else {
+										} else {
 										if (campaign.FriendDiscount > bestDiscount.discount){
 											bestDiscount.discount = campaign.FriendDiscount;
-											console.log("friend discount");
 										}
 									}
 								}
@@ -243,17 +245,17 @@ app.post("/discount", function (req, res){
 						}
 					});
 				}
-				});
-				
-				}
-				} else {
-				res.status(401).send("Please login to use the API");
-				}
-				});
-				
-				app.use("/", express.static(__dirname));
-				
-				app.listen(8888, function (req, res){
-				console.log('Server running at 127.0.0.1:8888');
-				});
-								
+			});
+			
+		}
+		} else {
+		winston.info("Please login to use the API|" + JSON.stringify(req.body));
+		res.status(401).send("Please login to use the API");
+	}
+});
+
+app.use("/", express.static(__dirname));
+
+app.listen(8888, function (req, res){
+	console.log('Server running at 127.0.0.1:8888');
+});
